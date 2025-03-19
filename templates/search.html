@@ -1,0 +1,26 @@
+{% extends "base.html" %}  {# Extend from the base template #}
+
+{% block body %}
+    <h2>Search for a Boat</h2>
+    
+    {# Search form for entering boat name #}
+    <form action="/search" method="POST">
+        <input type="text" name="search" placeholder="Enter boat name" class="input_field">
+        <input type="submit" value="Search" class="input_submit">
+    </form>
+
+    {# Display results if there are any #}
+    {% if results %}
+        <h3>Search Results:</h3>
+        <ul>
+            {% for boat in results %}
+                {# Display boat details in a list #}
+                <li>{{ boat[1] }} - {{ boat[2] }} - Owner ID: {{ boat[3] }} - Rental Price: {{ boat[4] }}</li>
+            {% endfor %}
+        </ul>
+    {% elif request.method == "POST" %}
+        {# Show message if no results found #}
+        <p>No results found.</p>
+    {% endif %}
+
+{% endblock %}

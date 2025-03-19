@@ -40,6 +40,18 @@ def createBoat():
         return render_template('boat_create.html', error = None, success = 'successful')
     except:
         return render_template('boat_create.html', error = "fail", success = None)
+    
+#Route for searching bots
+@app.route('/search', methods=['GET', 'POST'])
+def searchBoat():
+    results = []  # Initialize an empty results list
+    if request.method == 'POST':  # Check if the form was submitted
+        search_query = request.form['search']  # Get the search term from the form
+        with engine.connect() as conn:
+            # Query the database for boats matching the search term (partial match using LIKE)
+            results = conn.execute(text('SELECT * FROM boats WHERE name LIKE :search'), {'search': f'%{search_query}%'}).fetchall()
+    return render_template('search.html', results=results)  # Render the search results page
+
 
 # Run the Flask application in debug mode
 if __name__ == '__main__':
