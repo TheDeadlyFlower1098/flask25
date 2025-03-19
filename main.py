@@ -14,8 +14,8 @@ def hello():
 @app.route('/boats')
 def boats():
     boats = conn.execute(text('SELECT * FROM boats')).all()
-    for boats in boats:
-        print(boats)
+    for boat in boats:
+        print(boat)
     return render_template('boats.html', boats = boats[:10])
 
 
@@ -25,26 +25,15 @@ def getBoat():
 
 @app.route('/boatCreate', methods = ['POST'])
 def createBoat():
-    conn.execute(text('INSERT INTO boats values(:id, :name, :type, :owner_id, :rental_price)'), request.form).all()
+    conn.execute(text('INSERT INTO boats (id, name, type, owner_id, rental_price) VALUES (:id, :name, :type, :owner_id, :rental_price)'), {
+        "id": request.form["id"],
+        "name": request.form["name"],
+        "type": request.form["type"],
+        "owner_id": request.form["owner_id"],
+        "rental_price": request.form["rental_price"]
+    })
     conn.commit()
     return render_template('boat_create.html')
-
-# @app.route('/<name>')
-# def welcome(name): 
-#     return render_template('user.html', name = name)
-
-# @app.route('/hello')
-# def hello():
-#     return f'hello'
-
-# @app.route('/hello/<int:name>')
-# def serving_cofee(name):
-#     return f'the next number is {name +1}'
-
-# @app.route('/donut')
-# def donuts():
-#     return 'here is your donut'
-
 
 if __name__ == '__main__':
     app.run(debug=True)#last line

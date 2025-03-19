@@ -1,15 +1,14 @@
 {%extends 'base.html'%}
 {% block body %}
 
-    {%for boats in boats}
+    {% for boat in boats %}
         <ul>
-            <li>{{boats(0)}}</li>
-            <li>{{boats(1)}}</li>
-            <li>{{boats(2)}}</li>
-            <li>{{boats(3)}}</li>
-            <li>{{boats(4)}}</li>
+            <li>{{ boat[0] }}</li>
+            <li>{{ boat[1] }}</li>
+            <li>{{ boat[2] }}</li>
+            <li>{{ boat[3] }}</li>
+            <li>{{ boat[4] }}</li>
         </ul>
-
     {% endfor %}
 
 {% endblock %}
