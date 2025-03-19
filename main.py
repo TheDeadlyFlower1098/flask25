@@ -52,6 +52,26 @@ def searchBoat():
             results = conn.execute(text('SELECT * FROM boats WHERE name LIKE :search'), {'search': f'%{search_query}%'}).fetchall()
     return render_template('search.html', results=results)  # Render the search results page
 
+# Route for searching boats by ID and deleting
+@app.route('/search_delete', methods=['GET', 'POST'])
+def search_delete_boat():
+    result = None  # Initialize result to None
+    if request.method == 'POST':  # When the form is submitted
+        search_query = request.form['search']  # Get the search term (boat ID)
+        
+        with engine.connect() as conn:
+            # Query to check if the boat exists by ID
+            result = conn.execute(text('SELECT * FROM boats WHERE id = :search'), {'search': search_query}).fetchone()
+            
+            if result:
+                # If the boat is found, proceed with the deletion
+                conn.execute(text('DELETE FROM boats WHERE id = :search'), {'search': search_query})
+                return render_template('search_delete.html', result=result, success='Boat deleted successfully!')
+            else:
+                return render_template('search_delete.html', result=None, error="Boat not found!")
+    
+    return render_template('search_delete.html', result=result)  # Render the search results page
+
 
 # Run the Flask application in debug mode
 if __name__ == '__main__':

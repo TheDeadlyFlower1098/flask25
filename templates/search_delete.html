@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="body">
+        <h2>Search and Delete Boat</h2>
+        <form action="/search_delete" method="POST">
+            <input type="number" name="search" placeholder="Enter Boat ID" class="input_field" required> <br>
+            <input type="submit" value="Search and Delete" class="input_submit">
+        </form>
+
+        {% if result %}
+            <h3>Boat Found:</h3>
+            <ul>
+                <li><strong>ID:</strong> {{ result[0] }}</li>
+                <li><strong>Name:</strong> {{ result[1] }}</li>
+                <li><strong>Type:</strong> {{ result[2] }}</li>
+                <li><strong>Owner ID:</strong> {{ result[3] }}</li>
+                <li><strong>Rental Price:</strong> {{ result[4] }}</li>
+            </ul>
+            <p style="color: green;">{{ success }}</p>
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </div>
+{% endblock %}
